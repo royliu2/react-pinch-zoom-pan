@@ -154,7 +154,7 @@ class ReactPinchZoomPan extends Component {
 
     this.pinchSubscription = pinch.subscribe((newObject) => {
       if (this.state.obj.scale !== newObject.scale) {
-        this.refreshPinchTimeoutTimer(newObject.scale)
+        this.refreshPinchTimeoutTimer(newObject)
       }
       global.requestAnimationFrame(() => {
         this.setState({
@@ -164,33 +164,31 @@ class ReactPinchZoomPan extends Component {
     })
   }
 
-  refreshPinchTimeoutTimer (newScale) {
+  refreshPinchTimeoutTimer (newObj) {
     if (this.pinchTimeoutTimer) {
       clearTimeout(this.pinchTimeoutTimer)
     }
 
     if (!this.state.isPinching) {
-      this.pinchStarted(newScale)
+      this.pinchStarted(newObj)
     }
 
-    this.pinchTimeoutTimer = setTimeout(() => this.pinchStopped(), 500)
+    this.pinchTimeoutTimer = setTimeout(() => this.pinchStopped(newObj), 500)
   }
 
-  pinchStopped () {
+  pinchStopped (obj) {
     this.setState({
       isPinching: false
     }, () => {
       this.pinchTimeoutTimer = null
-      this.props.onPinchStop && this.props.onPinchStop(this.state.obj)
+      this.props.onPinchStop && this.props.onPinchStop(obj)
     })
   }
 
-  pinchStarted (newScale) {
+  pinchStarted (obj) {
     this.setState({
       isPinching: true
     }, () => {
-      let { obj } = this.state
-      obj.scale = newScale
       this.props.onPinchStart && this.props.onPinchStart(obj)
     })
   }
