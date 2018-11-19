@@ -181,7 +181,7 @@ class ReactPinchZoomPan extends Component {
       isPinching: false
     }, () => {
       this.pinchTimeoutTimer = null
-      this.props.onPinchStop && this.props.onPinchStop()
+      this.props.onPinchStop && this.props.onPinchStop(this.state.obj)
     })
   }
 
@@ -189,7 +189,7 @@ class ReactPinchZoomPan extends Component {
     this.setState({
       isPinching: true
     }, () => {
-      this.props.onPinchStart && this.props.onPinchStart()
+      this.props.onPinchStart && this.props.onPinchStart(this.state.obj)
     })
   }
 
